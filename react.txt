@@ -1,0 +1,189 @@
+npx create-react-app my-app
+cd my-app
+npm start
+
+app.css
+body{
+  background-color: #b2aba9;
+}
+.container{
+  background-color: #f2f2f2;
+  justify-content: center;
+  width: 50%;
+  margin-left: 26%;
+  margin-top: 5%;
+  text-align: center;
+}
+input[type=text], select {
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  bottom: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=password], select {
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  bottom: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+button{
+  width: 30%;
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover{
+background-color: #4caf50;
+}
+.header{
+  width: 95%;
+  background-color: rgb(7, 2, 71);
+  padding: 1px 20px;
+  color: white;
+}
+
+  .ui-define{
+  background-color: rgb(243, 240, 243);
+  margin-left: 25%;
+  width: 50%;
+  padding: 20px 30px;
+  margin-top: 5%;
+}
+
+
+app.js
+
+
+import './App.css';
+import Form from './Form';
+
+function App() {
+  return (
+  <>
+
+  <Form />
+  
+   </>
+  );
+}
+
+export default App;
+
+
+index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+
+Form.js 
+
+import React, { useState } from 'react';
+
+function Form() {
+  const initialData = { name: '', email: '', password: '', class: '', source: '', destination: '' };
+  const [formData, setFormData] = useState(initialData);
+  const [flag, setFlag] = useState(false);
+  const [totalFare, setTotalFare] = useState(0);
+
+  function handleInputChange(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+
+    // Perform form validation
+    if (!formData.name || !formData.email || !formData.password || !formData.source || !formData.destination) {
+      alert('All fields are mandatory');
+    } else {
+      // Calculate total fare (replace with your actual logic)
+      const fare = calculateTotalFare(formData.source, formData.destination);
+      setTotalFare(fare);
+
+      // Set the flag to display the success message
+      setFlag(true);
+    }
+  }
+
+  function calculateTotalFare(source, destination) {
+    // Placeholder logic, replace with your actual fare calculation
+    // For example, you can use an API or database to fetch the fare based on source and destination
+    // This is a placeholder, modify it according to your actual implementation
+    const fare = 50; // Replace with actual fare calculation
+    return fare;
+  }
+
+  return (
+    <div className="container">
+      {flag ? (
+        <>
+          <h2 className="ui-define">Hello {formData.name}, You've Registered Successfully</h2>
+          <p>Total Fare: ${totalFare}</p>
+          <p>Details: {JSON.stringify(formData)}</p>
+        </>
+      ) : (
+        <form onSubmit={handleFormSubmit}>
+          <div className="header">
+            <h1>Registration Form</h1>
+          </div>
+          <div>
+            <input type="text" placeholder="Enter Your Name" name="name" value={formData.name} onChange={handleInputChange} />
+          </div>
+          <div>
+            <input type="email" placeholder="Enter Your Email" name="email" value={formData.email} onChange={handleInputChange} />
+          </div>
+          <div>
+            <input type="password" placeholder="Enter Your Password" name="password" value={formData.password} onChange={handleInputChange} />
+          </div>
+          <div>
+            <input type="text" placeholder="Enter Your Class" name="class" value={formData.class} onChange={handleInputChange} />
+          </div>
+          <div>
+            <label htmlFor="source">Select Source:</label>
+            <select id="source" name="source" value={formData.source} onChange={handleInputChange}>
+              <option value="">Select Source</option>
+              <option value="source1">Source 1</option>
+              <option value="source2">Source 2</option>
+              {/* Add more options as needed */}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="destination">Select Destination:</label>
+            <select id="destination" name="destination" value={formData.destination} onChange={handleInputChange}>
+              <option value="">Select Destination</option>
+              <option value="destination1">Destination 1</option>
+              <option value="destination2">Destination 2</option>
+              {/* Add more options as needed */}
+            </select>
+          </div>
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
+
+export default Form;
